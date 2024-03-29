@@ -1,6 +1,7 @@
 'use client'
 
 import Color from '@/components/Filters/Color'
+import Price from '@/components/Filters/Price'
 import Size from '@/components/Filters/Size'
 import Sort from '@/components/Filters/Sort'
 import SubCategories from '@/components/Filters/SubCategories'
@@ -21,7 +22,7 @@ export default function Home() {
     size: ['S', 'M', 'L'],
     price: { isCustom: false, range: DEFAULT_CUSTOM_PRICE },
   })
-  console.log(filter)
+
   const { data: products } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
@@ -35,6 +36,13 @@ export default function Home() {
 
   const handleSortChange = (value: ProductState['sort']) => {
     setFilter((prev) => ({ ...prev, sort: value }))
+  }
+
+  const handlePriceChange = (value: ProductState['price']['range']) => {
+    setFilter((prev) => ({
+      ...prev,
+      price: { isCustom: false, range: [...value] },
+    }))
   }
 
   const applyArrayFilter = ({ category, value }: ApplyArrayFilter) => {
@@ -67,7 +75,6 @@ export default function Home() {
           {/* Filters */}
           <div className="hidden lg:block">
             <SubCategories />
-
             <Accordion type="multiple" className="animate-none">
               <Color
                 applyArrayFilter={applyArrayFilter}
@@ -78,6 +85,12 @@ export default function Home() {
               <Size
                 applyArrayFilter={applyArrayFilter}
                 filterSize={filter.size}
+              />
+            </Accordion>
+            <Accordion type="multiple" className="animate-none">
+              <Price
+                handlePriceChange={handlePriceChange}
+                isFilterPriceCustom={filter.price.isCustom}
               />
             </Accordion>
           </div>

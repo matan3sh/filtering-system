@@ -3,34 +3,34 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import { ApplyArrayFilter, SIZE_FILTERS } from '@/lib/filters'
+import { PRICE_FILTERS } from '@/lib/filters'
+import { ProductState } from '@/lib/validators/product-validator'
 
-interface SizeProps {
-  applyArrayFilter: (args: ApplyArrayFilter) => void
-  filterSize: string[]
+interface PriceProps {
+  handlePriceChange: (value: ProductState['price']['range']) => void
+  isFilterPriceCustom: boolean
 }
 
-const Size = ({ applyArrayFilter, filterSize }: SizeProps) => {
+const Price = ({ handlePriceChange, isFilterPriceCustom }: PriceProps) => {
   return (
-    <AccordionItem value="size">
+    <AccordionItem value="price">
       <AccordionTrigger className="py-3 text-sm text-gray-400 hover:text-gray-500">
-        <span className="font-medium text-gray-900">{SIZE_FILTERS.name}</span>
+        <span className="font-medium text-gray-900">{PRICE_FILTERS.name}</span>
       </AccordionTrigger>
 
       <AccordionContent className="pt-6 animate-none">
         <ul className="space-y-4">
-          {SIZE_FILTERS.options.map((option, idx) => (
-            <li key={option.value} className="flex items-center">
+          {PRICE_FILTERS.options.map((option, idx) => (
+            <li key={option.label} className="flex items-center">
               <input
                 type="checkbox"
-                id={`size-${idx}`}
+                id={`price-${idx}`}
                 onChange={() =>
-                  applyArrayFilter({
-                    category: 'size',
-                    value: option.value,
-                  })
+                  handlePriceChange(
+                    option.value as ProductState['price']['range']
+                  )
                 }
-                checked={filterSize.includes(option.value)}
+                checked={!isFilterPriceCustom}
                 className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
               />
               <label
@@ -47,4 +47,4 @@ const Size = ({ applyArrayFilter, filterSize }: SizeProps) => {
   )
 }
 
-export default Size
+export default Price
