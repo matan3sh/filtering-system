@@ -5,7 +5,11 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { Product } from '@/db'
 import { cn } from '@/lib/utils'
+import { useQuery } from '@tanstack/react-query'
+import { QueryResult } from '@upstash/vector'
+import axios from 'axios'
 import { ChevronDown, Filter } from 'lucide-react'
 import { useState } from 'react'
 
@@ -19,6 +23,23 @@ export default function Home() {
   const [filter, setFilter] = useState({
     sort: 'none',
   })
+
+  const { data: products } = useQuery({
+    queryKey: ['products'],
+    queryFn: async () => {
+      const { data } = await axios.post<QueryResult<Product[]>>(
+        'http://localhost:3000/api/products',
+        {
+          filter: {
+            sort: filter.sort,
+          },
+        }
+      )
+      return data
+    },
+  })
+
+  console.log(products)
 
   return (
     <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
