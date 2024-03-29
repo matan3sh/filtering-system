@@ -21,7 +21,7 @@ export default function Home() {
     size: ['S', 'M', 'L'],
     price: { isCustom: false, range: DEFAULT_CUSTOM_PRICE },
   })
-
+  console.log(filter)
   const { data: products } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {

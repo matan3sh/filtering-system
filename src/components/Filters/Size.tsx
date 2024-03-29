@@ -12,7 +12,7 @@ interface SizeProps {
 
 const Size = ({ applyArrayFilter, filterSize }: SizeProps) => {
   return (
-    <AccordionItem value="color">
+    <AccordionItem value="size">
       <AccordionTrigger className="py-3 text-sm text-gray-400 hover:text-gray-500">
         <span className="font-medium text-gray-900">{SIZE_FILTERS.name}</span>
       </AccordionTrigger>
@@ -26,7 +26,7 @@ const Size = ({ applyArrayFilter, filterSize }: SizeProps) => {
                 id={`color-${idx}`}
                 onChange={() =>
                   applyArrayFilter({
-                    category: 'color',
+                    category: 'size',
                     value: option.value,
                   })
                 }
