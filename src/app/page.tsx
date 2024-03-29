@@ -7,65 +7,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import type { Product as ProductType } from '@/db'
+import { SORT_OPTIONS, SUBCATEGORIES } from '@/lib/filters'
 import { cn } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import { QueryResult } from '@upstash/vector'
 import axios from 'axios'
 import { ChevronDown, Filter } from 'lucide-react'
 import { useState } from 'react'
-
-const SORT_OPTIONS = [
-  { name: 'None', value: 'none' },
-  { name: 'Price: Low to High', value: 'price-asc' },
-  { name: 'Price: High to Low', value: 'price-desc' },
-] as const
-
-const COLOR_FILTERS = {
-  id: 'color',
-  name: 'Color',
-  options: [
-    { value: 'white', label: 'White' },
-    { value: 'beige', label: 'Beige' },
-    { value: 'blue', label: 'Blue' },
-    { value: 'green', label: 'Green' },
-    { value: 'purple', label: 'Purple' },
-  ] as const,
-}
-
-const SIZE_FILTERS = {
-  id: 'size',
-  name: 'Size',
-  options: [
-    { value: 'S', label: 'S' },
-    { value: 'M', label: 'M' },
-    { value: 'L', label: 'L' },
-  ],
-} as const
-
-const PRICE_FILTERS = {
-  id: 'price',
-  name: 'Price',
-  options: [
-    { value: [0, 100], label: 'Any price' },
-    {
-      value: [0, 20],
-      label: 'Under 20€',
-    },
-    {
-      value: [0, 40],
-      label: 'Under 40€',
-    },
-  ],
-} as const
-
-const SUBCATEGORIES = [
-  { name: 'T-Shirts', selected: true, href: '#' },
-  { name: 'Hoodies', selected: false, href: '#' },
-  { name: 'Sweatshirts', selected: false, href: '#' },
-  { name: 'Accessories', selected: false, href: '#' },
-]
-
-const DEFAULT_CUSTOM_PRICE = [0, 100] as [number, number]
 
 export default function Home() {
   const [filter, setFilter] = useState({
