@@ -23,7 +23,7 @@ const Price = ({ handlePriceChange, filterPrice }: PriceProps) => {
           {PRICE_FILTERS.options.map((option, idx) => (
             <li key={option.label} className="flex items-center">
               <input
-                type="checkbox"
+                type="radio"
                 id={`price-${idx}`}
                 onChange={() =>
                   handlePriceChange(
