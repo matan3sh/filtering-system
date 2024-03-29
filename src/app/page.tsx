@@ -10,15 +10,19 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import type { Product as ProductType } from '@/db'
-import { COLOR_FILTERS } from '@/lib/filters'
+import { COLOR_FILTERS, DEFAULT_CUSTOM_PRICE } from '@/lib/filters'
+import { ProductState } from '@/lib/validators/product-validator'
 import { useQuery } from '@tanstack/react-query'
 import { QueryResult } from '@upstash/vector'
 import axios from 'axios'
 import { useState } from 'react'
 
 export default function Home() {
-  const [filter, setFilter] = useState({
+  const [filter, setFilter] = useState<ProductState>({
     sort: 'none',
+    color: ['beige', 'blue', 'green', 'purple', 'white'],
+    size: ['S', 'M', 'L'],
+    price: { isCustom: false, range: DEFAULT_CUSTOM_PRICE },
   })
 
   const { data: products } = useQuery({
@@ -26,17 +30,13 @@ export default function Home() {
     queryFn: async () => {
       const { data } = await axios.post<QueryResult<ProductType>[]>(
         'http://localhost:3000/api/products',
-        {
-          filter: {
-            sort: filter.sort,
-          },
-        }
+        { filter: { sort: filter.sort } }
       )
       return data
     },
   })
 
-  const handleSortChange = (value: string) => {
+  const handleSortChange = (value: ProductState['sort']) => {
     setFilter((prev) => ({ ...prev, sort: value }))
   }
 

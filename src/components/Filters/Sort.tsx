@@ -5,11 +5,12 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { SORT_OPTIONS } from '@/lib/filters'
 import { cn } from '@/lib/utils'
+import { ProductState } from '@/lib/validators/product-validator'
 import { ChevronDown, Filter } from 'lucide-react'
 
 interface SortProps {
   sort: string
-  handleSortChange: (value: string) => void
+  handleSortChange: (value: ProductState['sort']) => void
 }
 
 const Sort = ({ sort, handleSortChange }: SortProps) => {
