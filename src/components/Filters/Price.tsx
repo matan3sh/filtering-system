@@ -8,10 +8,10 @@ import { ProductState } from '@/lib/validators/product-validator'
 
 interface PriceProps {
   handlePriceChange: (value: ProductState['price']['range']) => void
-  isFilterPriceCustom: boolean
+  filterPrice: ProductState['price']
 }
 
-const Price = ({ handlePriceChange, isFilterPriceCustom }: PriceProps) => {
+const Price = ({ handlePriceChange, filterPrice }: PriceProps) => {
   return (
     <AccordionItem value="price">
       <AccordionTrigger className="py-3 text-sm text-gray-400 hover:text-gray-500">
@@ -30,7 +30,11 @@ const Price = ({ handlePriceChange, isFilterPriceCustom }: PriceProps) => {
                     option.value as ProductState['price']['range']
                   )
                 }
-                checked={!isFilterPriceCustom}
+                checked={
+                  !filterPrice.isCustom &&
+                  filterPrice.range[0] === option.value[0] &&
+                  filterPrice.range[1] === option.value[1]
+                }
                 className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
               />
               <label

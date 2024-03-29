@@ -90,7 +90,7 @@ export default function Home() {
             <Accordion type="multiple" className="animate-none">
               <Price
                 handlePriceChange={handlePriceChange}
-                isFilterPriceCustom={filter.price.isCustom}
+                filterPrice={filter.price}
               />
             </Accordion>
           </div>
