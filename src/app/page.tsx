@@ -40,6 +40,25 @@ export default function Home() {
     setFilter((prev) => ({ ...prev, sort: value }))
   }
 
+  const applyArrayFilter = ({
+    category,
+    value,
+  }: {
+    category: keyof Omit<typeof filter, 'price' | 'sort'>
+    value: string
+  }) => {
+    const isFilterApplied = filter[category].includes(value as never)
+
+    if (isFilterApplied) {
+      setFilter((prev) => ({
+        ...prev,
+        [category]: prev[category].filter((v) => v !== value),
+      }))
+    } else {
+      setFilter((prev) => ({ ...prev, [category]: [...prev[category], value] }))
+    }
+  }
+
   return (
     <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
@@ -72,6 +91,13 @@ export default function Home() {
                         <input
                           type="checkbox"
                           id={`color-${idx}`}
+                          onChange={() =>
+                            applyArrayFilter({
+                              category: 'color',
+                              value: option.value,
+                            })
+                          }
+                          checked={filter.color.includes(option.value)}
                           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                         />
                         <label
