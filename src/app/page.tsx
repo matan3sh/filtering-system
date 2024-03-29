@@ -1,13 +1,19 @@
 'use client'
 
+import SubCategories from '@/components/Filters/SubCategories'
 import ProductList from '@/components/Products/ProductList'
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import type { Product as ProductType } from '@/db'
-import { SORT_OPTIONS, SUBCATEGORIES } from '@/lib/filters'
+import { SORT_OPTIONS } from '@/lib/filters'
 import { cn } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import { QueryResult } from '@upstash/vector'
@@ -77,18 +83,16 @@ export default function Home() {
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
           {/* Filters */}
           <div className="hidden lg:block">
-            <ul className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
-              {SUBCATEGORIES.map((category) => (
-                <li key={category.name}>
-                  <button
-                    disabled={!category.selected}
-                    className="disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    {category.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <SubCategories />
+
+            <Accordion type="multiple" className="animate-none">
+              {/* Color filter */}
+              <AccordionItem value="color">
+                <AccordionTrigger className="py-3 text-sm text-gray-400 hover:text-gray-500">
+                  <span className="font-medium text-gray-900">Color</span>
+                </AccordionTrigger>
+              </AccordionItem>
+            </Accordion>
           </div>
 
           {/* Product grid */}
