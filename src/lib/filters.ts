@@ -1,3 +1,10 @@
+import { ProductState } from '@/lib/validators/product-validator'
+
+export type ApplyArrayFilter = {
+  category: keyof Omit<ProductState, 'price' | 'sort'>
+  value: string
+}
+
 export const SORT_OPTIONS = [
   { name: 'None', value: 'none' },
   { name: 'Price: Low to High', value: 'price-asc' },

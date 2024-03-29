@@ -1,16 +1,12 @@
 'use client'
 
+import Color from '@/components/Filters/Color'
 import Sort from '@/components/Filters/Sort'
 import SubCategories from '@/components/Filters/SubCategories'
 import ProductList from '@/components/Products/ProductList'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion'
+import { Accordion } from '@/components/ui/accordion'
 import type { Product as ProductType } from '@/db'
-import { COLOR_FILTERS, DEFAULT_CUSTOM_PRICE } from '@/lib/filters'
+import { ApplyArrayFilter, DEFAULT_CUSTOM_PRICE } from '@/lib/filters'
 import { ProductState } from '@/lib/validators/product-validator'
 import { useQuery } from '@tanstack/react-query'
 import { QueryResult } from '@upstash/vector'
@@ -40,13 +36,7 @@ export default function Home() {
     setFilter((prev) => ({ ...prev, sort: value }))
   }
 
-  const applyArrayFilter = ({
-    category,
-    value,
-  }: {
-    category: keyof Omit<typeof filter, 'price' | 'sort'>
-    value: string
-  }) => {
+  const applyArrayFilter = ({ category, value }: ApplyArrayFilter) => {
     const isFilterApplied = filter[category].includes(value as never)
 
     if (isFilterApplied) {
@@ -77,40 +67,12 @@ export default function Home() {
           <div className="hidden lg:block">
             <SubCategories />
 
+            {/* Color filter */}
             <Accordion type="multiple" className="animate-none">
-              {/* Color filter */}
-              <AccordionItem value="color">
-                <AccordionTrigger className="py-3 text-sm text-gray-400 hover:text-gray-500">
-                  <span className="font-medium text-gray-900">Color</span>
-                </AccordionTrigger>
-
-                <AccordionContent className="pt-6 animate-none">
-                  <ul className="space-y-4">
-                    {COLOR_FILTERS.options.map((option, idx) => (
-                      <li key={option.value} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          id={`color-${idx}`}
-                          onChange={() =>
-                            applyArrayFilter({
-                              category: 'color',
-                              value: option.value,
-                            })
-                          }
-                          checked={filter.color.includes(option.value)}
-                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                        />
-                        <label
-                          htmlFor={`color-${idx}`}
-                          className="ml-3 text-sm text-gray-600"
-                        >
-                          {option.label}
-                        </label>
-                      </li>
-                    ))}
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
+              <Color
+                applyArrayFilter={applyArrayFilter}
+                filterColor={filter.color}
+              />
             </Accordion>
           </div>
 
