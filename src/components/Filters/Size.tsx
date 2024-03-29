@@ -3,23 +3,23 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import { ApplyArrayFilter, COLOR_FILTERS } from '@/lib/filters'
+import { ApplyArrayFilter, SIZE_FILTERS } from '@/lib/filters'
 
-interface ColorProps {
+interface SizeProps {
   applyArrayFilter: (args: ApplyArrayFilter) => void
-  filterColor: string[]
+  filterSize: string[]
 }
 
-const Color = ({ applyArrayFilter, filterColor }: ColorProps) => {
+const Size = ({ applyArrayFilter, filterSize }: SizeProps) => {
   return (
     <AccordionItem value="color">
       <AccordionTrigger className="py-3 text-sm text-gray-400 hover:text-gray-500">
-        <span className="font-medium text-gray-900">{COLOR_FILTERS.name}</span>
+        <span className="font-medium text-gray-900">{SIZE_FILTERS.name}</span>
       </AccordionTrigger>
 
       <AccordionContent className="pt-6 animate-none">
         <ul className="space-y-4">
-          {COLOR_FILTERS.options.map((option, idx) => (
+          {SIZE_FILTERS.options.map((option, idx) => (
             <li key={option.value} className="flex items-center">
               <input
                 type="checkbox"
@@ -30,7 +30,7 @@ const Color = ({ applyArrayFilter, filterColor }: ColorProps) => {
                     value: option.value,
                   })
                 }
-                checked={filterColor.includes(option.value)}
+                checked={filterSize.includes(option.value)}
                 className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
               />
               <label
@@ -47,4 +47,4 @@ const Color = ({ applyArrayFilter, filterColor }: ColorProps) => {
   )
 }
 
-export default Color
+export default Size

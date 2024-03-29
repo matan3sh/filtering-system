@@ -1,6 +1,7 @@
 'use client'
 
 import Color from '@/components/Filters/Color'
+import Size from '@/components/Filters/Size'
 import Sort from '@/components/Filters/Sort'
 import SubCategories from '@/components/Filters/SubCategories'
 import ProductList from '@/components/Products/ProductList'
@@ -67,11 +68,16 @@ export default function Home() {
           <div className="hidden lg:block">
             <SubCategories />
 
-            {/* Color filter */}
             <Accordion type="multiple" className="animate-none">
               <Color
                 applyArrayFilter={applyArrayFilter}
                 filterColor={filter.color}
+              />
+            </Accordion>
+            <Accordion type="multiple" className="animate-none">
+              <Size
+                applyArrayFilter={applyArrayFilter}
+                filterSize={filter.size}
               />
             </Accordion>
           </div>
