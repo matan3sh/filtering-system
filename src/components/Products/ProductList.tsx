@@ -1,3 +1,4 @@
+import EmptyState from '@/components/Products/EmptyState'
 import Product from '@/components/Products/Product'
 import ProductSkeleton from '@/components/Products/ProductSkeleton'
 import { Product as ProductType } from '@/db'
@@ -10,11 +11,15 @@ interface ProductListProps {
 const ProductList = ({ products }: ProductListProps) => {
   return (
     <ul className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-      {products
-        ? products?.map((product) => (
-            <Product key={product.id} product={product.metadata!} />
-          ))
-        : new Array(12).fill(null).map((_, i) => <ProductSkeleton key={i} />)}
+      {products && products.length === 0 ? (
+        <EmptyState />
+      ) : products ? (
+        products?.map((product) => (
+          <Product key={product.id} product={product.metadata!} />
+        ))
+      ) : (
+        new Array(12).fill(null).map((_, i) => <ProductSkeleton key={i} />)
+      )}
     </ul>
   )
 }
