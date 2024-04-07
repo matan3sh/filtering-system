@@ -7,11 +7,21 @@ import { PRICE_FILTERS } from '@/lib/filters'
 import { ProductState } from '@/lib/validators/product-validator'
 
 interface PriceProps {
-  handlePriceChange: (value: ProductState['price']['range']) => void
+  handlePriceChange: (
+    value: ProductState['price']['range'],
+    isCustom?: boolean
+  ) => void
   filterPrice: ProductState['price']
+  minPrice: number
+  maxPrice: number
 }
 
-const Price = ({ handlePriceChange, filterPrice }: PriceProps) => {
+const Price = ({
+  handlePriceChange,
+  filterPrice,
+  minPrice,
+  maxPrice,
+}: PriceProps) => {
   return (
     <AccordionItem value="price">
       <AccordionTrigger className="py-3 text-sm text-gray-400 hover:text-gray-500">
@@ -45,6 +55,42 @@ const Price = ({ handlePriceChange, filterPrice }: PriceProps) => {
               </label>
             </li>
           ))}
+          <li className="flex justify-center flex-col gap-2">
+            <div>
+              <input
+                type="radio"
+                id={`price-${PRICE_FILTERS.options.length}`}
+                onChange={() =>
+                  handlePriceChange(
+                    [0, 100] as ProductState['price']['range'],
+                    true
+                  )
+                }
+                checked={filterPrice.isCustom}
+                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              />
+              <label
+                htmlFor={`color-${PRICE_FILTERS.options.length}`}
+                className="ml-3 text-sm text-gray-600"
+              >
+                Custom
+              </label>
+            </div>
+
+            <div className="flex justify-between">
+              <p className="font-medium">Price</p>
+              <div>
+                {filterPrice.isCustom
+                  ? minPrice.toFixed(0)
+                  : filterPrice.range[0].toFixed(0)}
+                $ -{' '}
+                {filterPrice.isCustom
+                  ? maxPrice.toFixed(0)
+                  : filterPrice.range[1].toFixed(0)}
+                ${' '}
+              </div>
+            </div>
+          </li>
         </ul>
       </AccordionContent>
     </AccordionItem>

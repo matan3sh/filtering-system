@@ -38,10 +38,13 @@ export default function Home() {
     setFilter((prev) => ({ ...prev, sort: value }))
   }
 
-  const handlePriceChange = (value: ProductState['price']['range']) => {
+  const handlePriceChange = (
+    value: ProductState['price']['range'],
+    isCustom: boolean = false
+  ) => {
     setFilter((prev) => ({
       ...prev,
-      price: { isCustom: false, range: [...value] },
+      price: { isCustom, range: [...value] },
     }))
   }
 
@@ -57,6 +60,9 @@ export default function Home() {
       setFilter((prev) => ({ ...prev, [category]: [...prev[category], value] }))
     }
   }
+
+  const minPrice = Math.min(filter.price.range[0], filter.price.range[1])
+  const maxPrice = Math.max(filter.price.range[0], filter.price.range[1])
 
   return (
     <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -91,6 +97,8 @@ export default function Home() {
               <Price
                 handlePriceChange={handlePriceChange}
                 filterPrice={filter.price}
+                minPrice={minPrice}
+                maxPrice={maxPrice}
               />
             </Accordion>
           </div>
