@@ -50,7 +50,7 @@ const Price = ({
                 className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
               />
               <label
-                htmlFor={`color-${idx}`}
+                htmlFor={`price-${idx}`}
                 className="ml-3 text-sm text-gray-600"
               >
                 {option.label}
@@ -72,7 +72,7 @@ const Price = ({
                 className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
               />
               <label
-                htmlFor={`color-${PRICE_FILTERS.options.length}`}
+                htmlFor={`price-${PRICE_FILTERS.options.length}`}
                 className="ml-3 text-sm text-gray-600"
               >
                 Custom

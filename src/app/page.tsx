@@ -13,7 +13,8 @@ import { ProductState } from '@/lib/validators/product-validator'
 import { useQuery } from '@tanstack/react-query'
 import { QueryResult } from '@upstash/vector'
 import axios from 'axios'
-import { useState } from 'react'
+import debounce from 'lodash.debounce'
+import { useCallback, useState } from 'react'
 
 export default function Home() {
   const [filter, setFilter] = useState<ProductState>({
@@ -23,19 +24,34 @@ export default function Home() {
     price: { isCustom: false, range: DEFAULT_CUSTOM_PRICE },
   })
 
-  const { data: products } = useQuery({
+  const { data: products, refetch } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
       const { data } = await axios.post<QueryResult<ProductType>[]>(
         'http://localhost:3000/api/products',
-        { filter: { sort: filter.sort } }
+        {
+          filter: {
+            sort: filter.sort,
+            color: filter.color,
+            price: filter.price.range,
+            size: filter.size,
+          },
+        }
       )
       return data
     },
   })
 
+  const onSubmit = () => refetch()
+
+  const debouncedSubmit = debounce(onSubmit, 400)
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const _debouncedSubmit = useCallback(debouncedSubmit, [])
+
   const handleSortChange = (value: ProductState['sort']) => {
     setFilter((prev) => ({ ...prev, sort: value }))
+    onSubmit()
   }
 
   const handlePriceChange = (
@@ -46,6 +62,8 @@ export default function Home() {
       ...prev,
       price: { isCustom, range: [...value] },
     }))
+
+    _debouncedSubmit()
   }
 
   const applyArrayFilter = ({ category, value }: ApplyArrayFilter) => {
@@ -59,6 +77,8 @@ export default function Home() {
     } else {
       setFilter((prev) => ({ ...prev, [category]: [...prev[category], value] }))
     }
+
+    _debouncedSubmit()
   }
 
   const minPrice = Math.min(filter.price.range[0], filter.price.range[1])
