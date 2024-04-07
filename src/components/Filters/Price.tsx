@@ -3,7 +3,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import { PRICE_FILTERS } from '@/lib/filters'
+import { Slider } from '@/components/ui/slider'
+import { DEFAULT_CUSTOM_PRICE, PRICE_FILTERS } from '@/lib/filters'
+import { cn } from '@/lib/utils'
 import { ProductState } from '@/lib/validators/product-validator'
 
 interface PriceProps {
@@ -90,6 +92,24 @@ const Price = ({
                 ${' '}
               </div>
             </div>
+
+            <Slider
+              className={cn({
+                'opcity-50': !filterPrice.isCustom,
+              })}
+              disabled={!filterPrice.isCustom}
+              onValueChange={(range) => {
+                const [newMin, newMax] = range
+                handlePriceChange([newMin, newMax], true)
+              }}
+              value={
+                filterPrice.isCustom ? filterPrice.range : DEFAULT_CUSTOM_PRICE
+              }
+              min={DEFAULT_CUSTOM_PRICE[0]}
+              max={DEFAULT_CUSTOM_PRICE[1]}
+              defaultValue={DEFAULT_CUSTOM_PRICE}
+              step={5}
+            />
           </li>
         </ul>
       </AccordionContent>
